@@ -61,6 +61,9 @@ const TaskItemCard: React.FC<TaskItemCardProps> = ({
     month: '2-digit',
   });
 
+  const truncatedDescription =
+    description.length > 150 ? description.slice(0, 150) + '...' : description;
+
   return (
     <div
       className={`flex items-start rounded-lg bg-white p-4 drop-shadow-lg  ${
@@ -72,7 +75,7 @@ const TaskItemCard: React.FC<TaskItemCardProps> = ({
           <h3 className='text-lg font-semibold'>{title}</h3>
         </div>
         <div className='flex items-center gap-2'>
-          <p className='text-sm text-gray-600'>{description}</p>
+          <p className='text-sm text-gray-600'>{truncatedDescription}</p>
           <div className='ml-auto flex items-center gap-0.5 rounded-md bg-slate-200 px-1'>
             <span className='text-xs text-green-800'>
               {formattedCreationDate}

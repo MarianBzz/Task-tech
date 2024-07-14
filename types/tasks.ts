@@ -23,7 +23,7 @@ export const tasksData: TaskType[] = [
     dueDate: '2024-08-01',
     completed: false,
     activities: [
-      { id: 1, name: 'Definir endpoints', completed: true },
+      { id: 1, name: 'Definir endpoints', completed: false },
       { id: 2, name: 'Implementar controladores', completed: false },
       { id: 3, name: 'Probar con Postman', completed: true },
       { id: 4, name: 'Configurar seguridad', completed: false },

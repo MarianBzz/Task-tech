@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import TaskItemCard from './TaskItemCard';
 import { TaskType, tasksData } from '../../../types/tasks';
+import ModalAddTicket from './ModalAddTask';
+import { Dialog, DialogPanel } from '@tremor/react';
 
 const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<TaskType[]>(tasksData);
@@ -94,6 +96,11 @@ const TaskList: React.FC = () => {
 
   return (
     <div className='flex h-full w-full flex-col rounded-lg bg-white p-6 text-black shadow-md'>
+      {/* <Dialog open={true} onClose={() => closeMenu()} static={true}>
+        <DialogPanel className='custom-text absolute flex max-w-sm flex-col gap-4 border-none text-black'>
+          asdad
+        </DialogPanel>
+      </Dialog> */}
       {/* Controles de filtro */}
       <div className='mb-4 space-x-4'>
         <button
