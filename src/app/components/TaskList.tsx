@@ -1,9 +1,12 @@
+// TaskList.tsx
 'use client';
 import React, { useState } from 'react';
 import TaskItemCard from './TaskItemCard';
 import { TaskType, tasksData } from '../../../types/tasks';
 import { Plus } from 'lucide-react';
 import ModalAddTask from './ModalAddTask';
+import TaskFilters from './TaskFilters';
+import SortControls from './SortControls';
 
 const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<TaskType[]>(tasksData);
@@ -91,9 +94,8 @@ const TaskList: React.FC = () => {
   };
 
   const handleSortChange = (sortByOption: typeof sortBy) => {
-    setSortBy(sortByOption); // Establecer el nuevo tipo de orden
+    setSortBy(sortByOption);
 
-    // Actualizar la dirección de orden basado en el tipo seleccionado
     switch (sortByOption) {
       case 'titleAsc':
       case 'dateCreatedAsc':
@@ -124,100 +126,9 @@ const TaskList: React.FC = () => {
 
   return (
     <div className='flex h-full w-full flex-col rounded-lg bg-white p-6 text-black shadow-md'>
-      {/* Controles de filtro */}
-      <div className='mb-4 flex items-center gap-3'>
-        <button
-          onClick={() => handleFilterChange('all')}
-          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
-            filter === 'all'
-              ? 'bg-blue-500 text-white hover:bg-blue-600'
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          Todas
-        </button>
-        <button
-          onClick={() => handleFilterChange('completed')}
-          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
-            filter === 'completed'
-              ? 'bg-blue-500 text-white hover:bg-blue-600'
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          Completadas
-        </button>
-        <button
-          onClick={() => handleFilterChange('pending')}
-          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
-            filter === 'pending'
-              ? 'bg-blue-500 text-white hover:bg-blue-600'
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          Pendientes
-        </button>
-        {/* Controles de orden */}
-        <button
-          onClick={() => handleSortChange('titleAsc')}
-          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
-            sortBy === 'titleAsc'
-              ? 'bg-blue-500 text-white hover:bg-blue-600'
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          A-Z
-        </button>
-        <button
-          onClick={() => handleSortChange('titleDesc')}
-          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
-            sortBy === 'titleDesc'
-              ? 'bg-blue-500 text-white hover:bg-blue-600'
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          Z-A
-        </button>
-        <button
-          onClick={() => handleSortChange('dateCreatedAsc')}
-          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
-            sortBy === 'dateCreatedAsc'
-              ? 'bg-blue-500 text-white hover:bg-blue-600'
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          Fecha Creación ↑
-        </button>
-        <button
-          onClick={() => handleSortChange('dateCreatedDesc')}
-          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
-            sortBy === 'dateCreatedDesc'
-              ? 'bg-blue-500 text-white hover:bg-blue-600'
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          Fecha Creación ↓
-        </button>
-        <button
-          onClick={() => handleSortChange('dueDateAsc')}
-          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
-            sortBy === 'dueDateAsc'
-              ? 'bg-blue-500 text-white hover:bg-blue-600'
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          Fecha Vencimiento ↑
-        </button>
-        <button
-          onClick={() => handleSortChange('dueDateDesc')}
-          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
-            sortBy === 'dueDateDesc'
-              ? 'bg-blue-500 text-white hover:bg-blue-600'
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          Fecha Vencimiento ↓
-        </button>
-
+      <div className='mb-4  flex items-center gap-3'>
+        <TaskFilters filter={filter} onFilterChange={handleFilterChange} />
+        <SortControls sortBy={sortBy} handleSortChange={handleSortChange} />
         <button
           className='ml-auto flex items-center gap-1 rounded-lg bg-red-500 px-2 py-1 text-white hover:bg-red-600'
           onClick={openModal}
@@ -226,7 +137,7 @@ const TaskList: React.FC = () => {
           <p className='text-xs'>Crear Tarea</p>
         </button>
       </div>
-      {/* Lista de tareas */}
+
       <div className='grid grid-flow-row grid-cols-4 gap-4'>
         {sortTasks(filteredTasks).map((task) => (
           <div key={task.id} className='relative row-span-1'>
@@ -238,7 +149,7 @@ const TaskList: React.FC = () => {
           </div>
         ))}
       </div>
-      {/* Modal para agregar tarea */}
+
       {isModalOpen && (
         <ModalAddTask closeModal={closeModal} addTask={addTask} />
       )}

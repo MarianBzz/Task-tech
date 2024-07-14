@@ -74,7 +74,7 @@ const ModalAddTask = ({ closeModal, addTask }: ModalAddTaskProps) => {
       id: Math.floor(Math.random() * 1000) + 1,
       title: taskData.title,
       description: taskData.description,
-      creationDate: new Date().toLocaleDateString(), // Fecha de creación actual
+      creationDate: new Date().toLocaleDateString(),
       dueDate: taskData.dueDate,
       completed: taskData.completed,
       activities: taskData.activities,
@@ -87,12 +87,15 @@ const ModalAddTask = ({ closeModal, addTask }: ModalAddTaskProps) => {
 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-      <div className='relative flex max-h-[80%] w-full flex-col justify-center gap-8 rounded-3xl bg-white px-10 py-5 sm:w-3/6 sm:py-5'>
+      <div className='relative flex max-h-[80%] w-full flex-col justify-center gap-8 rounded-3xl bg-red-500 px-10 pt-5 sm:w-3/6 sm:pt-5'>
         <button onClick={() => closeModal()} className='absolute right-3 top-3'>
-          <CircleX color='gray' />
+          <CircleX
+            color='black'
+            className='rounded-full bg-slate-50 hover:opacity-90'
+          />
         </button>
-        <h2 className='text-lg font-semibold text-zinc-800'>Crear Tarea</h2>
-        <div className='-mr-10 overflow-y-scroll pr-8'>
+        <h2 className='text-lg font-bold text-zinc-800'>Crear Tarea</h2>
+        <div className='-mx-10 overflow-y-scroll rounded-2xl bg-white py-4 pl-10 pr-8'>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -186,7 +189,7 @@ const ModalAddTask = ({ closeModal, addTask }: ModalAddTaskProps) => {
             </div>
             <button
               type='submit'
-              className='ml-auto mt-6 rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none'
+              className='ml-auto mt-6 rounded-md bg-green-500 px-4 py-2 text-sm text-white hover:bg-green-600 focus:outline-none'
             >
               Crear Tarea
             </button>
