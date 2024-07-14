@@ -1,10 +1,9 @@
 'use client';
-
 import React, { useState } from 'react';
 import TaskItemCard from './TaskItemCard';
 import { TaskType, tasksData } from '../../../types/tasks';
-import ModalAddTicket from './ModalAddTask';
-import { Dialog, DialogPanel } from '@tremor/react';
+import { Plus } from 'lucide-react';
+import ModalAddTask from './ModalAddTask';
 
 const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<TaskType[]>(tasksData);
@@ -19,6 +18,20 @@ const TaskList: React.FC = () => {
   >('titleAsc');
   const [menuVisible, setMenuVisible] = useState<number | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const addTask = (newTask: TaskType) => {
+    setTasks([...tasks, newTask]);
+    setIsModalOpen(false); // Cerrar el modal después de agregar la tarea
+  };
 
   const filteredTasks = tasks.filter((task) => {
     if (filter === 'completed') {
@@ -78,11 +91,26 @@ const TaskList: React.FC = () => {
   };
 
   const handleSortChange = (sortByOption: typeof sortBy) => {
-    if (sortBy === sortByOption) {
-      return; // No cambiar la dirección si es el mismo tipo de orden
-    } else {
-      setSortBy(sortByOption);
-      setSortDirection('asc'); // Siempre establecer el orden ascendente al cambiar de tipo de orden
+    setSortBy(sortByOption); // Establecer el nuevo tipo de orden
+
+    // Actualizar la dirección de orden basado en el tipo seleccionado
+    switch (sortByOption) {
+      case 'titleAsc':
+      case 'dateCreatedAsc':
+      case 'dueDateAsc':
+        if (sortDirection !== 'asc') {
+          setSortDirection('asc');
+        }
+        break;
+      case 'titleDesc':
+      case 'dateCreatedDesc':
+      case 'dueDateDesc':
+        if (sortDirection !== 'desc') {
+          setSortDirection('desc');
+        }
+        break;
+      default:
+        break;
     }
   };
 
@@ -96,13 +124,8 @@ const TaskList: React.FC = () => {
 
   return (
     <div className='flex h-full w-full flex-col rounded-lg bg-white p-6 text-black shadow-md'>
-      {/* <Dialog open={true} onClose={() => closeMenu()} static={true}>
-        <DialogPanel className='custom-text absolute flex max-w-sm flex-col gap-4 border-none text-black'>
-          asdad
-        </DialogPanel>
-      </Dialog> */}
       {/* Controles de filtro */}
-      <div className='mb-4 space-x-4'>
+      <div className='mb-4 flex items-center gap-3'>
         <button
           onClick={() => handleFilterChange('all')}
           className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
@@ -194,6 +217,14 @@ const TaskList: React.FC = () => {
         >
           Fecha Vencimiento ↓
         </button>
+
+        <button
+          className='ml-auto flex items-center gap-1 rounded-lg bg-red-500 px-2 py-1 text-white hover:bg-red-600'
+          onClick={openModal}
+        >
+          <Plus />
+          <p className='text-xs'>Crear Tarea</p>
+        </button>
       </div>
       {/* Lista de tareas */}
       <div className='grid grid-flow-row grid-cols-4 gap-4'>
@@ -207,6 +238,10 @@ const TaskList: React.FC = () => {
           </div>
         ))}
       </div>
+      {/* Modal para agregar tarea */}
+      {isModalOpen && (
+        <ModalAddTask closeModal={closeModal} addTask={addTask} />
+      )}
     </div>
   );
 };

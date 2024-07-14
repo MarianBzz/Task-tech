@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { CircleX } from 'lucide-react';
-import { Dispatch, SetStateAction } from 'react';
 
 type Activity = {
   id: number;
@@ -18,11 +17,12 @@ type TaskData = {
   activities: Activity[];
 };
 
-const ModalAddTask = ({
-  setIsOpen,
-}: {
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
+type ModalAddTaskProps = {
+  closeModal: () => void;
+  addTask: (newTask: TaskData) => void;
+};
+
+const ModalAddTask = ({ closeModal, addTask }: ModalAddTaskProps) => {
   const [taskData, setTaskData] = useState<TaskData>({
     id: 0,
     title: '',
@@ -33,7 +33,7 @@ const ModalAddTask = ({
     activities: [
       {
         id: 1,
-        name: '', // Puedes establecer un nombre inicial si lo deseas
+        name: '',
         completed: false,
       },
     ],
@@ -70,25 +70,35 @@ const ModalAddTask = ({
   };
 
   const handleSubmit = () => {
-    // Aquí puedes manejar la lógica para enviar los datos de la tarea
-    console.log('Datos de la tarea:', taskData);
-    setIsOpen(false); // Cerrar el modal después de enviar
+    const newTask: TaskData = {
+      id: Math.floor(Math.random() * 1000) + 1,
+      title: taskData.title,
+      description: taskData.description,
+      creationDate: new Date().toLocaleDateString(), // Fecha de creación actual
+      dueDate: taskData.dueDate,
+      completed: taskData.completed,
+      activities: taskData.activities,
+    };
+
+    console.log('Nueva tarea:', newTask);
+    closeModal();
+    addTask(newTask);
   };
 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
       <div className='relative flex max-h-[80%] w-full flex-col justify-center gap-8 rounded-3xl bg-white px-10 py-5 sm:w-3/6 sm:py-5'>
-        <button
-          onClick={() => setIsOpen(false)}
-          className='absolute right-3 top-3'
-        >
+        <button onClick={() => closeModal()} className='absolute right-3 top-3'>
           <CircleX color='gray' />
         </button>
         <h2 className='text-lg font-semibold text-zinc-800'>Crear Tarea</h2>
         <div className='-mr-10 overflow-y-scroll pr-8'>
           <form
-            onSubmit={handleSubmit}
-            className='flex flex-col gap-5  text-black'
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+            className='flex flex-col gap-5 text-black'
           >
             <div>
               <label htmlFor='title' className='block text-sm font-medium'>

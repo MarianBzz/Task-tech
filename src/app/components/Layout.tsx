@@ -1,20 +1,8 @@
 'use client';
-import { Plus } from 'lucide-react';
 import Image from 'next/image';
-import React, { useState } from 'react';
-import ModalAddTask from './ModalAddTask';
+import React from 'react';
 
 const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div className='flex h-screen w-full flex-col'>
       <header className='sticky top-0 z-10 flex items-center justify-between bg-red-500 p-4 text-white'>
@@ -38,13 +26,14 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
           <h1 className='text-2xl font-bold'>TaskTech</h1>
         </div>
         <div className='flex items-center space-x-4'>
-          <input type='text' className='rounded-lg p-2' placeholder='Search' />
+          {/* <input type='text' className='rounded-lg p-2' placeholder='Search' />
           <button
-            className='rounded-lg p-2 hover:bg-red-600'
-            onClick={openModal}
+            className='flex items-center gap-1 rounded-lg p-2 hover:bg-red-600'
+            onClick={openModal} // Aquí abrimos el modal desde el Layout
           >
             <Plus />
-          </button>
+            <p className='text-xs'>Crear Tarea</p>
+          </button> */}
           <Image
             src='/messi.jpg'
             alt='Profile Image'
@@ -56,7 +45,6 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
       </header>
       <main className='flex flex-1 flex-col bg-gray-100 px-2 pt-1'>
         {children}
-        {isModalOpen && <ModalAddTask setIsOpen={setIsModalOpen} />}
       </main>
     </div>
   );

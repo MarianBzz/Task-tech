@@ -62,7 +62,9 @@ const TaskItemCard: React.FC<TaskItemCardProps> = ({
   });
 
   const truncatedDescription =
-    description.length > 150 ? description.slice(0, 150) + '...' : description;
+    description && description.length > 150
+      ? description.slice(0, 150) + '...'
+      : description;
 
   return (
     <div
