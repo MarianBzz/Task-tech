@@ -37,17 +37,6 @@ const TaskItemCard: React.FC<TaskItemCardProps> = ({
     setMenuVisible(!menuVisible);
   };
 
-  const handleTaskToggle = () => {
-    toggleComplete(id);
-    setMenuVisible(false);
-  };
-
-  const handleDeleteTask = () => {
-    deleteTask(id);
-    setMenuVisible(false);
-  };
-
-  // Formateo de fechas para mostrar solo día y mes (DD/MM)
   const formattedCreationDate = new Date(creationDate).toLocaleDateString(
     'es-AR',
     {
@@ -69,7 +58,7 @@ const TaskItemCard: React.FC<TaskItemCardProps> = ({
   return (
     <div
       className={`flex items-start rounded-lg bg-white p-4 drop-shadow-lg  ${
-        completed ? 'border border-green-500 bg-green-200' : ''
+        completed ? 'border border-green-500 bg-green-100' : ''
       }`}
     >
       <div className='flex-1'>

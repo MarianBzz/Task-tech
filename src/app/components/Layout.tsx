@@ -37,8 +37,8 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
           <Image
             src='/messi.jpg'
             alt='Profile Image'
-            width={40}
-            height={40}
+            width={100}
+            height={100}
             className='h-10 w-10 rounded-full object-cover'
           />
         </div>

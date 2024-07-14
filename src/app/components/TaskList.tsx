@@ -138,9 +138,9 @@ const TaskList: React.FC = () => {
         </button>
       </div>
 
-      <div className='grid grid-flow-row grid-cols-4 gap-4'>
+      <div className='flex flex-wrap gap-4'>
         {sortTasks(filteredTasks).map((task) => (
-          <div key={task.id} className='relative row-span-1'>
+          <div key={task.id} className='relative flex-grow'>
             <TaskItemCard
               {...task}
               toggleComplete={toggleComplete}
