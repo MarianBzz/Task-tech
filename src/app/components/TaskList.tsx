@@ -1,12 +1,22 @@
 'use client';
+
 import React, { useState } from 'react';
-import Task from './Task';
+import TaskItemCard from './TaskItemCard';
 import { TaskType, tasksData } from '../../../types/tasks';
 
 const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<TaskType[]>(tasksData);
   const [filter, setFilter] = useState<'all' | 'completed' | 'pending'>('all');
-  const [sortBy, setSortBy] = useState<'titleAsc' | 'titleDesc'>('titleAsc');
+  const [sortBy, setSortBy] = useState<
+    | 'titleAsc'
+    | 'titleDesc'
+    | 'dateCreatedAsc'
+    | 'dateCreatedDesc'
+    | 'dueDateAsc'
+    | 'dueDateDesc'
+  >('titleAsc');
+  const [menuVisible, setMenuVisible] = useState<number | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   const filteredTasks = tasks.filter((task) => {
     if (filter === 'completed') {
@@ -14,7 +24,7 @@ const TaskList: React.FC = () => {
     } else if (filter === 'pending') {
       return !task.completed;
     } else {
-      return true; // Mostrar todas las tareas
+      return true;
     }
   });
 
@@ -24,14 +34,39 @@ const TaskList: React.FC = () => {
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
+    setMenuVisible(null);
+  };
+
+  const deleteTask = (id: number) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+    setMenuVisible(null);
   };
 
   const sortTasks = (tasksToSort: TaskType[]) => {
     return tasksToSort.sort((a, b) => {
-      if (sortBy === 'titleAsc') {
-        return a.title.localeCompare(b.title);
-      } else {
-        return b.title.localeCompare(a.title);
+      switch (sortBy) {
+        case 'titleAsc':
+        case 'titleDesc':
+          return sortBy === 'titleAsc'
+            ? a.title.localeCompare(b.title)
+            : b.title.localeCompare(a.title);
+        case 'dateCreatedAsc':
+        case 'dateCreatedDesc':
+          const dateCreatedOrder = sortDirection === 'asc' ? 1 : -1;
+          return (
+            dateCreatedOrder *
+            (new Date(a.creationDate).getTime() -
+              new Date(b.creationDate).getTime())
+          );
+        case 'dueDateAsc':
+        case 'dueDateDesc':
+          const dueDateOrder = sortDirection === 'asc' ? 1 : -1;
+          return (
+            dueDateOrder *
+            (new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())
+          );
+        default:
+          return 0;
       }
     });
   };
@@ -40,17 +75,30 @@ const TaskList: React.FC = () => {
     setFilter(newFilter);
   };
 
-  const handleSortChange = (sortByOption: 'titleAsc' | 'titleDesc') => {
-    setSortBy(sortByOption);
+  const handleSortChange = (sortByOption: typeof sortBy) => {
+    if (sortBy === sortByOption) {
+      return; // No cambiar la dirección si es el mismo tipo de orden
+    } else {
+      setSortBy(sortByOption);
+      setSortDirection('asc'); // Siempre establecer el orden ascendente al cambiar de tipo de orden
+    }
+  };
+
+  const openMenu = (taskId: number) => {
+    setMenuVisible(taskId);
+  };
+
+  const closeMenu = () => {
+    setMenuVisible(null);
   };
 
   return (
-    <div className='flex h-full w-full flex-col rounded-lg bg-white p-6 text-black shadow-md '>
+    <div className='flex h-full w-full flex-col rounded-lg bg-white p-6 text-black shadow-md'>
       {/* Controles de filtro */}
       <div className='mb-4 space-x-4'>
         <button
           onClick={() => handleFilterChange('all')}
-          className={`borderborder-gray-300 rounded-md px-3 py-1 text-sm ${
+          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
             filter === 'all'
               ? 'bg-blue-500 text-white hover:bg-blue-600'
               : 'bg-white text-gray-700 hover:bg-gray-100'
@@ -99,19 +147,56 @@ const TaskList: React.FC = () => {
         >
           Z-A
         </button>
+        <button
+          onClick={() => handleSortChange('dateCreatedAsc')}
+          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
+            sortBy === 'dateCreatedAsc'
+              ? 'bg-blue-500 text-white hover:bg-blue-600'
+              : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          Fecha Creación ↑
+        </button>
+        <button
+          onClick={() => handleSortChange('dateCreatedDesc')}
+          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
+            sortBy === 'dateCreatedDesc'
+              ? 'bg-blue-500 text-white hover:bg-blue-600'
+              : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          Fecha Creación ↓
+        </button>
+        <button
+          onClick={() => handleSortChange('dueDateAsc')}
+          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
+            sortBy === 'dueDateAsc'
+              ? 'bg-blue-500 text-white hover:bg-blue-600'
+              : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          Fecha Vencimiento ↑
+        </button>
+        <button
+          onClick={() => handleSortChange('dueDateDesc')}
+          className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${
+            sortBy === 'dueDateDesc'
+              ? 'bg-blue-500 text-white hover:bg-blue-600'
+              : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          Fecha Vencimiento ↓
+        </button>
       </div>
       {/* Lista de tareas */}
-      <div className='grid grid-flow-col grid-cols-4 gap-4'>
+      <div className='grid grid-flow-row grid-cols-4 gap-4'>
         {sortTasks(filteredTasks).map((task) => (
-          <div key={task.id} className='col-span-1'>
-            <Task {...task} toggleComplete={toggleComplete} />
-          </div>
-        ))}
-      </div>
-      <div className='grid grid-flow-col grid-cols-4 gap-4'>
-        {sortTasks(filteredTasks).map((task) => (
-          <div key={task.id} className='col-span-1'>
-            <Task {...task} toggleComplete={toggleComplete} />
+          <div key={task.id} className='relative row-span-1'>
+            <TaskItemCard
+              {...task}
+              toggleComplete={toggleComplete}
+              deleteTask={deleteTask}
+            />
           </div>
         ))}
       </div>
