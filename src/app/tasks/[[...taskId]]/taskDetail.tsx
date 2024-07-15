@@ -81,7 +81,7 @@ const TaskDetailPage = ({ taskId }: { taskId: TaskType['id'] }) => {
   const handleAddActivity = () => {
     if (task && newActivityName.trim()) {
       const newActivity = {
-        id: Date.now(), // Puedes usar cualquier generador de IDs
+        id: Date.now(),
         name: newActivityName,
         completed: false,
       };

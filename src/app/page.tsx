@@ -1,4 +1,3 @@
-// app/page.tsx o pages/index.tsx
 import React from 'react';
 import Layout from './components/Layout';
 import TaskList from './components/TaskList';

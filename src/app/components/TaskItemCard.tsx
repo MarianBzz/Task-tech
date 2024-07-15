@@ -87,7 +87,6 @@ const TaskItemCard: React.FC<TaskItemCardProps> = ({
         </div>
         <h1 className='mt-3'>Actividades</h1>
         <div className='flex flex-col px-1 text-xs'>
-          {/* Lista de actividades */}
           {activities.map((activity) => (
             <div key={activity.id} className='flex items-center'>
               <span

@@ -26,14 +26,6 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
           <h1 className='text-2xl font-bold'>TaskTech</h1>
         </div>
         <div className='flex items-center space-x-4'>
-          {/* <input type='text' className='rounded-lg p-2' placeholder='Search' />
-          <button
-            className='flex items-center gap-1 rounded-lg p-2 hover:bg-red-600'
-            onClick={openModal} // Aquí abrimos el modal desde el Layout
-          >
-            <Plus />
-            <p className='text-xs'>Crear Tarea</p>
-          </button> */}
           <Image
             src='/messi.jpg'
             alt='Profile Image'
