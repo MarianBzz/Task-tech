@@ -1,6 +1,8 @@
+'use client';
 import React, { useState } from 'react';
 import TaskMenu from './TaskMenu';
 import { Ellipsis } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface Activity {
   id: number;
@@ -32,6 +34,7 @@ const TaskItemCard: React.FC<TaskItemCardProps> = ({
   deleteTask,
 }) => {
   const [menuVisible, setMenuVisible] = useState(false);
+  const router = useRouter();
 
   const handleToggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -55,11 +58,16 @@ const TaskItemCard: React.FC<TaskItemCardProps> = ({
       ? description.slice(0, 150) + '...'
       : description;
 
+  const handleCardClick = () => {
+    router.push(`/tasks/${id}`);
+  };
+
   return (
     <div
       className={`flex items-start rounded-lg bg-white p-4 drop-shadow-lg  ${
         completed ? 'border border-green-500 bg-green-100' : ''
       }`}
+      onClick={handleCardClick}
     >
       <div className='flex-1'>
         <div className='mb-2 flex items-center justify-between'>
