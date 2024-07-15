@@ -34,9 +34,11 @@ const TaskItemCard: React.FC<TaskItemCardProps> = ({
   deleteTask,
 }) => {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const router = useRouter();
 
-  const handleToggleMenu = () => {
+  const handleToggleMenu = (event: React.MouseEvent) => {
+    event.stopPropagation();
     setMenuVisible(!menuVisible);
   };
 
@@ -58,21 +60,22 @@ const TaskItemCard: React.FC<TaskItemCardProps> = ({
       ? description.slice(0, 150) + '...'
       : description;
 
-  const handleCardClick = () => {
+  const handleCardClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
     router.push(`/tasks/${id}`);
   };
 
   return (
     <div
-      className={`flex items-start rounded-lg bg-white p-4 drop-shadow-lg  ${
+      className={`flex cursor-pointer items-start rounded-lg bg-white p-4 drop-shadow-lg ${
         completed ? 'border border-green-500 bg-green-100' : ''
-      }`}
+      } ${hovered ? 'bg-gray-200' : ''}`}
       onClick={handleCardClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <div className='flex-1'>
-        <div className='mb-2 flex items-center justify-between'>
-          <h3 className='text-lg font-semibold'>{title}</h3>
-        </div>
+        <h3 className='text-lg font-semibold'>{title}</h3>
         <div className='flex items-center gap-2'>
           <p className='text-sm text-gray-600'>{truncatedDescription}</p>
           <div className='ml-auto flex items-center gap-0.5 rounded-md bg-slate-200 px-1'>
@@ -96,18 +99,21 @@ const TaskItemCard: React.FC<TaskItemCardProps> = ({
               </span>
             </div>
           ))}
+          {hovered && (
+            <span className='absolute bottom-3 right-3 ml-auto text-xs text-blue-500'>
+              Ver tarea
+            </span>
+          )}
         </div>
       </div>
-      {/* Enlace a la página de detalle con animación */}
 
-      {/* Puntos suspensivos para abrir el menú */}
       <button
-        className='ml-2 text-xl text-gray-500 hover:text-gray-900'
+        className='ml-2 rounded-sm text-xl text-gray-500 hover:bg-gray-300 hover:text-gray-900'
         onClick={handleToggleMenu}
       >
         <Ellipsis size={19} />
       </button>
-      {/* Menú de acciones */}
+
       {menuVisible && (
         <TaskMenu
           taskId={id}

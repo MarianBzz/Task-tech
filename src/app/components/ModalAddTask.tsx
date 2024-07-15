@@ -70,6 +70,12 @@ const ModalAddTask = ({ closeModal, addTask }: ModalAddTaskProps) => {
   };
 
   const handleSubmit = () => {
+    const currentDateString = new Date().toISOString().split('T')[0];
+    if (taskData.dueDate < currentDateString) {
+      alert('La fecha de vencimiento no puede ser anterior a la fecha actual.');
+      return;
+    }
+
     const newTask: TaskData = {
       id: Math.floor(Math.random() * 1000) + 1,
       title: taskData.title,
@@ -94,7 +100,7 @@ const ModalAddTask = ({ closeModal, addTask }: ModalAddTaskProps) => {
             className='rounded-full bg-slate-50 hover:opacity-90'
           />
         </button>
-        <h2 className='text-lg font-bold text-zinc-800'>Crear Tarea</h2>
+        <h2 className='text-lg font-bold text-white'>Crear Tarea</h2>
         <div className='-mx-10 overflow-y-scroll rounded-2xl bg-white py-4 pl-10 pr-8'>
           <form
             onSubmit={(e) => {

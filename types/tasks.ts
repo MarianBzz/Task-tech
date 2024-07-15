@@ -30,6 +30,20 @@ export const tasksData: TaskType[] = [
     ],
   },
   {
+    id: 7,
+    title: 'Ganar la Copa America',
+    description: 'Salir bicampeón',
+    creationDate: '2024-07-15',
+    dueDate: '2024-07-15',
+    completed: true,
+    activities: [
+      { id: 1, name: 'Cambios de Scaloni', completed: true },
+      { id: 2, name: 'Gol de Lautaro', completed: true },
+      { id: 3, name: 'Despedida de Di María', completed: true },
+      { id: 4, name: 'Messi Dios', completed: true },
+    ],
+  },
+  {
     id: 2,
     title: 'Configurar base de datos',
     description: 'Configurar la base de datos para el proyecto',

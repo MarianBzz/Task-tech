@@ -1,5 +1,5 @@
-// TaskList.tsx
 'use client';
+
 import React, { useState } from 'react';
 import TaskItemCard from './TaskItemCard';
 import { TaskType, tasksData } from '../../../types/tasks';
@@ -33,7 +33,7 @@ const TaskList: React.FC = () => {
 
   const addTask = (newTask: TaskType) => {
     setTasks([...tasks, newTask]);
-    setIsModalOpen(false); // Cerrar el modal después de agregar la tarea
+    setIsModalOpen(false);
   };
 
   const filteredTasks = tasks.filter((task) => {
@@ -116,16 +116,8 @@ const TaskList: React.FC = () => {
     }
   };
 
-  const openMenu = (taskId: number) => {
-    setMenuVisible(taskId);
-  };
-
-  const closeMenu = () => {
-    setMenuVisible(null);
-  };
-
   return (
-    <div className='flex h-full w-full flex-col rounded-lg bg-white p-6 text-black shadow-md'>
+    <div className='flex h-full w-full flex-col gap-3 rounded-lg bg-white p-6 text-black shadow-md'>
       <div className='mb-4  flex items-center gap-3'>
         <TaskFilters filter={filter} onFilterChange={handleFilterChange} />
         <SortControls sortBy={sortBy} handleSortChange={handleSortChange} />
