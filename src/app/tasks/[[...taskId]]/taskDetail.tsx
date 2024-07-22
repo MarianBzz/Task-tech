@@ -14,12 +14,7 @@ const TaskDetailPage = ({ taskId }: { taskId: TaskType['id'] }) => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log('taskId:', taskId);
-    const taskDetail = tasksData.find((task) => {
-      console.log('Comparing:', task.id, taskId);
-      return task.id == taskId;
-    });
-    console.log('taskDetail:', taskDetail);
+    const taskDetail = tasksData.find((task) => task.id == taskId);
     if (taskDetail) {
       setTask(taskDetail);
     }
@@ -28,7 +23,7 @@ const TaskDetailPage = ({ taskId }: { taskId: TaskType['id'] }) => {
   if (!task) {
     return (
       <Layout>
-        <div className='flex items-center justify-center'>
+        <div className='flex h-full items-center justify-center'>
           <div className='h-8 w-8 animate-spin self-center rounded-full border-b-2 border-t-2 border-blue-500'></div>
         </div>
       </Layout>
@@ -103,14 +98,16 @@ const TaskDetailPage = ({ taskId }: { taskId: TaskType['id'] }) => {
 
   return (
     <Layout>
-      <div className='flex flex-col p-6 px-20 text-black'>
+      <div className='flex flex-col p-4 text-black sm:p-6 md:px-10  lg:px-20'>
         <button
-          className='-ml-16 w-fit rounded-md p-1 hover:bg-gray-400'
+          className='-ml-1 w-fit rounded-md p-1 hover:bg-gray-400 sm:-ml-2 md:-ml-4 lg:-ml-16'
           onClick={() => router.back()}
         >
           <ChevronLeft />
         </button>
-        <h1 className='text-2xl font-semibold'>Detalle de la Tarea</h1>
+        <h1 className='pt-10 text-xl font-semibold sm:text-2xl'>
+          Detalle de la Tarea
+        </h1>
         <div className='mt-4'>
           <label className='block text-sm font-medium text-gray-700'>
             Título
@@ -119,7 +116,7 @@ const TaskDetailPage = ({ taskId }: { taskId: TaskType['id'] }) => {
             type='text'
             value={task.title}
             onChange={handleTitleChange}
-            className='mt-1 block h-10 w-full rounded-md border-gray-300 pl-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+            className='mt-1 block w-full rounded-md border-gray-300 pl-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
           />
         </div>
         <div className='mt-4'>
@@ -129,16 +126,15 @@ const TaskDetailPage = ({ taskId }: { taskId: TaskType['id'] }) => {
           <textarea
             value={task.description}
             onChange={handleDescriptionChange}
-            className='mt-1 block h-16 w-full rounded-md border-gray-300 pl-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+            className='mt-1 block w-full rounded-md border-gray-300 pl-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
           />
         </div>
-        <div className='mt-4 w-auto'>
+        <div className='mt-4 w-full'>
           <label className='block text-sm font-medium text-gray-700'>
             Imagen
           </label>
           <input
             type='file'
-            placeholder='Subir Imagen'
             onChange={handleImageChange}
             className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
           />
@@ -154,7 +150,7 @@ const TaskDetailPage = ({ taskId }: { taskId: TaskType['id'] }) => {
             />
           </div>
         )}
-        <h2 className='mt-6 text-xl font-semibold'>Actividades</h2>
+        <h2 className='mt-6 text-lg font-semibold sm:text-xl'>Actividades</h2>
         <div className='mt-2 flex flex-col gap-2'>
           {task.activities.map((activity) => (
             <div key={activity.id} className='flex items-center'>
