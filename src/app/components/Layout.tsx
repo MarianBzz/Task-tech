@@ -5,7 +5,7 @@ import React from 'react';
 const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return (
     <div className='flex h-screen w-full flex-col'>
-      <header className='sticky top-0 z-10 flex items-center justify-between bg-red-500 p-4 text-white'>
+      <header className='sticky top-0 z-10 flex w-full items-center justify-between bg-red-500 p-4 text-white'>
         <div className='flex items-center space-x-4'>
           <button className='rounded-lg p-2 hover:bg-red-600'>
             <svg

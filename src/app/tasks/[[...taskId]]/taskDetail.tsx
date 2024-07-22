@@ -68,10 +68,12 @@ const TaskDetailPage = ({ taskId }: { taskId: TaskType['id'] }) => {
 
   const handleDeleteTask = () => {
     alert('Tarea eliminada');
+    router.push('/');
   };
 
   const handleSaveChanges = () => {
     alert('Cambios guardados');
+    router.push('/');
   };
 
   const handleNewActivityChange = (e: React.ChangeEvent<HTMLInputElement>) => {

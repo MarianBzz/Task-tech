@@ -24,7 +24,7 @@ const SortControls: React.FC<SortControlsProps> = ({
   handleSortChange,
 }) => {
   return (
-    <div className='flex items-center gap-3'>
+    <div className='flex w-full flex-col items-center gap-3 lg:flex-row'>
       <button
         onClick={() => handleSortChange('titleAsc')}
         className={`rounded-md border border-gray-300 px-3 py-1 text-sm ${

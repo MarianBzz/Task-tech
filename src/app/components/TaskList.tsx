@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import TaskItemCard from './TaskItemCard';
 import { TaskType, tasksData } from '../../../types/tasks';
-import { Plus } from 'lucide-react';
+import { Plus, Menu } from 'lucide-react';
 import ModalAddTask from './ModalAddTask';
 import TaskFilters from './TaskFilters';
 import SortControls from './SortControls';
@@ -22,6 +22,7 @@ const TaskList: React.FC = () => {
   const [menuVisible, setMenuVisible] = useState<number | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -116,11 +117,26 @@ const TaskList: React.FC = () => {
     }
   };
 
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+
   return (
     <div className='flex h-full w-full flex-col gap-3 rounded-lg bg-white p-6 text-black shadow-md'>
-      <div className='mb-4  flex items-center gap-3'>
-        <TaskFilters filter={filter} onFilterChange={handleFilterChange} />
-        <SortControls sortBy={sortBy} handleSortChange={handleSortChange} />
+      <div className='mb-4 flex w-full items-center gap-3'>
+        <div className='flex'>
+          <button
+            className='flex items-center gap-1 rounded-lg bg-red-500 px-2 py-1 text-white hover:bg-red-600 lg:hidden'
+            onClick={toggleDrawer}
+          >
+            <Menu />
+          </button>
+        </div>
+
+        <div className='hidden w-full gap-3 lg:flex'>
+          <TaskFilters filter={filter} onFilterChange={handleFilterChange} />
+          <SortControls sortBy={sortBy} handleSortChange={handleSortChange} />
+        </div>
         <button
           className='ml-auto flex items-center gap-1 rounded-lg bg-red-500 px-2 py-1 text-white hover:bg-red-600'
           onClick={openModal}
@@ -144,6 +160,26 @@ const TaskList: React.FC = () => {
 
       {isModalOpen && (
         <ModalAddTask closeModal={closeModal} addTask={addTask} />
+      )}
+
+      {isDrawerOpen && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+          <div className='relative w-11/12 max-w-sm rounded-lg bg-white p-6 shadow-lg'>
+            <button className='absolute right-2 top-2' onClick={toggleDrawer}>
+              X
+            </button>
+            <div className='flex flex-col gap-3'>
+              <TaskFilters
+                filter={filter}
+                onFilterChange={handleFilterChange}
+              />
+              <SortControls
+                sortBy={sortBy}
+                handleSortChange={handleSortChange}
+              />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
